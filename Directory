@@ -1,0 +1,32 @@
+StackingTowers/
+│── assets/             # (Folder for game assets like images, sounds)
+│   ├── bluepointsBox.png # worth five points
+│   ├── yellowpointsBox.png # worth ten points
+│   ├── redpointsBox.png # worth  twenty points
+│   ├── adaptive-icon.png
+│   ├── Backgroundimg.jpg #Background image of game 
+│   ├── Crane.png #Crane to hold the boxes
+│   ├── favicon.png 
+│   ├── icon.png
+│   ├── Logo.png #Stcking Towers Logo
+│   ├── Restartbtn.png #Restart button
+│   ├── splash-icon.png
+│   ├── Startbtn.png #Start button
+│   ├── TopScore.png #Main menu top score display
+│── components/         # (Game screens and UI components)
+│   ├── GameScreen.js
+│   ├── ScoreBoard.js
+│   ├── StartScreen.js
+│── game/               # (Game logic, entities, physics, etc.)
+│   ├── BlueBox.js
+│   ├── entities.js
+│   ├── RedBox.js
+│   ├── YellowBox.js
+│── node_modules/       # (Dependencies managed by npm)
+│── .gitignore          # (Ignore unnecessary files for Git)
+│── App.js              # (Main entry for React Native or React)
+│── app.json            # (Configuration file for Expo/React Native)
+│── index.js            # (Entry point for the app)
+│── package.json        # (Dependencies and scripts)
+│── package-lock.json   # (Lock file for npm)
+│── Physics.js          # (Game physics logic)
