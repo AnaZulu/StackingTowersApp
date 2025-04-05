@@ -18,25 +18,21 @@ import RedBox from "../game/redpointsBox";
 export default function GameScreen({ onGameOver }) {
   const engine = useRef(null);
   const [running, setRunning] = useState(true);
-  const [score, setScore] = useState(5);
-  const [entities, setEntities] = useState(() => createEntities(5, setScore));
-  const entitiesRef = useRef(entities);
+  const [score, setScore] = useState(0);
+  const entitiesRef = useRef(createEntities(score, setScore));
 
   useEffect(() => {
-    entitiesRef.current = entities;
-  }, [entities]);
-
-  useEffect(() => {
-    engine.current && engine.current.swap(entities);
-  }, []);
+    if (engine.current) {
+      entitiesRef.current.score = score;
+      engine.current.swap(entitiesRef.current);
+    }
+  }, [score]);
 
   const reset = () => {
     setRunning(false);
     setTimeout(() => {
-      setScore(5);
-      const newEntities = createEntities(5, setScore);
-      entitiesRef.current = newEntities;
-      setEntities(newEntities);
+      setScore(0);
+      entitiesRef.current = createEntities(0, setScore);
       setRunning(true);
     }, 100);
   };
@@ -55,44 +51,47 @@ export default function GameScreen({ onGameOver }) {
     let BoxComponent;
     let boxLabel;
     let dropSpeed;
+    let boxPoints;
 
-    // Pick the block color and fall speed depending on the current score
+    // Choose block color based on score
     if (score >= 100) {
       BoxComponent = RedBox;
       boxLabel = "RedBox";
       dropSpeed = 8;
+      boxPoints = 20;
     } else if (score >= 50) {
       BoxComponent = YellowBox;
       boxLabel = "YellowBox";
       dropSpeed = 5;
+      boxPoints = 10;
     } else {
       BoxComponent = BlueBox;
       boxLabel = "BlueBox";
       dropSpeed = 2;
+      boxPoints = 5;
     }
 
-    // create a unique ID for each new blocks so the enginge can track them separately
+    // Generate a unique key for each box
     const timestamp = Date.now();
     const random = Math.floor(Math.random() * 1000);
     const entityKey = `${boxLabel}_${timestamp}_${random}`;
 
-    // Create and drop the block at the crane's current position
+    // Create the box using BoxComponent
     const newBox = BoxComponent(
       entitiesRef.current.physics.world,
       { x: craneX, y: craneY + 50 },
       boxLabel,
-      score,
+      boxPoints,
       setScore
     );
 
-    // Drop the block with a set speed
+    // Set the block's fall speed
     Matter.Body.setVelocity(newBox.body, { x: 0, y: dropSpeed });
 
-    // Add the block to the engine using the unique key
+    // Add the block to the engine using its unique key
     entitiesRef.current[entityKey] = newBox;
-    setEntities({ ...entitiesRef.current });
 
-    // Force the game engine to refresh and show the new block
+    // Force the engine to refresh
     engine.current.swap(entitiesRef.current);
   };
 
@@ -103,11 +102,12 @@ export default function GameScreen({ onGameOver }) {
           source={require("../assets/Backgroundimg.jpg")}
           style={styles.background}
         />
+
         <GameEngine
           ref={engine}
           style={styles.gameEngine}
           systems={[Physics]}
-          entities={entities}
+          entities={entitiesRef.current}
           running={running}
         >
           <ScoreBoard score={score} />

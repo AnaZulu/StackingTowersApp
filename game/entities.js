@@ -1,8 +1,5 @@
 import Matter from "matter-js";
 import { Dimensions, Image, View } from "react-native";
-import BlueBox from "./bluepointsBox";
-import RedBox from "./redpointsBox";
-import YellowBox from "./yellowpointsBox";
 
 const { width, height } = Dimensions.get("window");
 
@@ -64,20 +61,7 @@ export default function createEntities(score, setScore) {
       image: require("../assets/Crane.png"),
       renderer: craneRenderer,
     },
-    blueBox: BlueBox(
-      world,
-      { x: width / 2, y: 150 },
-      "BlueBox",
-      score,
-      setScore
-    ),
-    yellowBox: YellowBox(
-      world,
-      { x: width / 2, y: 150 },
-      "YellowBox",
-      score,
-      setScore
-    ),
-    redBox: RedBox(world, { x: width / 2, y: 150 }, "RedBox", score, setScore),
+    score: score,
+    setScore,
   };
 }

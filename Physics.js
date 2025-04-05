@@ -22,17 +22,15 @@ export default function Physics(entities, { time }) {
     Matter.Body.setAngularVelocity(crane, 0);
   }
 
-  // When the box touches the ground or another box, give points ** I forgot I wasnt the one working on the scoring so replace any of the code if needed ** ** I dont think i got it to work anyways**
+  // When the box touches the ground or another box, give points
   Matter.Events.on(engine, "collisionStart", (event) => {
     const pairs = event.pairs;
 
     pairs.forEach(({ bodyA, bodyB }) => {
+      // Ensure we're always using bodyB to check for scoring
       let boxBody = null;
 
-      // Detect if a box hits anything except the crane
-      if (bodyA.label.includes("Box") && bodyB.label !== "Crane") {
-        boxBody = bodyA;
-      } else if (bodyB.label.includes("Box") && bodyA.label !== "Crane") {
+      if (bodyB.label.includes("Box")) {
         boxBody = bodyB;
       }
 
@@ -41,17 +39,23 @@ export default function Physics(entities, { time }) {
           (e) => e.body && e.body.id === boxBody.id
         );
 
-        // Only give points oncer per box
-        if (boxEntity && boxEntity.points && !boxEntity.hasScored) {
-          boxEntity.hasScored = true;
+        if (boxEntity && boxEntity.points) {
+          // Ensure a box only scores once
+          if (!boxEntity.hasScored) {
+            boxEntity.hasScored = true;
 
-          const currentScore = entities.score || 0;
-          const setScore = entities.setScore;
-          const newScore = currentScore + boxEntity.points;
+            const currentScore = entities.score || 0;
+            const points = boxEntity.points || 0;
+            const newScore = currentScore + points;
 
-          if (typeof setScore === "function") {
-            setScore(newScore);
+            console.log("Updated score: ", newScore);
+
+            // Update the score
             entities.score = newScore;
+
+            if (typeof entities.setScore === "function") {
+              entities.setScore(newScore);
+            }
           }
         }
       }
