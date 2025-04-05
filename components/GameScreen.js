@@ -26,6 +26,11 @@ export default function GameScreen({ onGameOver }) {
       entitiesRef.current.score = score;
       engine.current.swap(entitiesRef.current);
     }
+
+    if (score >= 200) {
+      setRunning(false);
+      onGameOver?.();
+    }
   }, [score]);
 
   const reset = () => {
@@ -38,12 +43,6 @@ export default function GameScreen({ onGameOver }) {
   };
 
   const handleDrop = () => {
-    if (score >= 200) {
-      setRunning(false);
-      onGameOver?.();
-      return;
-    }
-
     const craneBody = entitiesRef.current.crane.body;
     const craneX = craneBody.position.x;
     const craneY = craneBody.position.y;
