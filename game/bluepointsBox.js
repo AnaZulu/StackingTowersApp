@@ -2,11 +2,37 @@ import Matter from "matter-js";
 import React from "react";
 import { Image } from "react-native";
 
+const BlueBoxRenderer = (props) => {
+  const { body } = props;
+  const width = 40;
+  const height = 40;
+
+  const x = body.position.x - width / 2;
+  const y = body.position.y - height / 2;
+
+  return (
+    <Image
+      source={require("../assets/bluepointsBox.png")}
+      style={{
+        position: "absolute",
+        left: x,
+        top: y,
+        width,
+        height,
+        resizeMode: "contain",
+      }}
+    />
+  );
+};
+
 export default function BlueBox(world, pos, label, score, setScore) {
   const box = Matter.Bodies.rectangle(pos.x, pos.y, 40, 40, {
     label,
-    restitution: 0.3,
-    friction: 0.7,
+    restitution: 0.1,
+    friction: 0.6,
+    frictionStatic: 0.5,
+    inertia: 5000,
+    sleepThreshold: 20,
   });
 
   Matter.World.add(world, [box]);
@@ -15,19 +41,7 @@ export default function BlueBox(world, pos, label, score, setScore) {
     body: box,
     size: [40, 40],
     label,
-    renderer: () => (
-      <Image
-        source={require("../assets/bluepointsBox.png")}
-        style={{
-          width: 40,
-          height: 40,
-          resizeMode: "contain",
-          position: "absolute",
-          left: box.position.x - 20,
-          top: box.position.y - 20,
-        }}
-      />
-    ),
+    renderer: BlueBoxRenderer,
     points: 5,
   };
 }

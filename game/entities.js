@@ -16,7 +16,7 @@ export default function createEntities(score, setScore) {
   });
 
   const crane = Matter.Bodies.rectangle(width / 2, 100, 100, 20, {
-    isStatic: true,
+    isStatic: false,
     label: "Crane",
     render: {
       sprite: {
