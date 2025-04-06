@@ -14,7 +14,9 @@
     "matter-js": "^0.20.0",
     "react": "18.3.1",
     "react-native": "0.76.8",
-    "react-native-game-engine": "^1.2.0"
+    "react-native-game-engine": "^1.2.0",
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "expo-av": "~15.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

@@ -28,11 +28,12 @@ const BlueBoxRenderer = (props) => {
 export default function BlueBox(world, pos, label, score, setScore) {
   const box = Matter.Bodies.rectangle(pos.x, pos.y, 40, 40, {
     label,
-    restitution: 0.1,
-    friction: 0.6,
+    restitution: 0,
+    friction: 0.3,
     frictionStatic: 0.5,
-    inertia: 5000,
-    sleepThreshold: 20,
+    density: 0.002,
+    inertia: Infinity,
+    angle: 0,
   });
 
   Matter.World.add(world, [box]);

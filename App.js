@@ -1,31 +1,35 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 import StartScreen from "./components/StartScreen";
 import GameScreen from "./components/GameScreen";
+import WinScreen from "./components/WinScreen";
 
 export default function App() {
-  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [screen, setScreen] = useState("start");
 
-  console.log("LOGGED APP LOADED", isGameStarted);
+  const startGame = () => {
+    setScreen("game");
+  };
+
+  const handleGameOver = (type) => {
+    if (type === "win") {
+      setScreen("win");
+    } else if (type === "lose") {
+      // Only triggered when "Back to Start" is pressed
+      setScreen("start");
+    }
+  };
+
+  const backToMenu = () => {
+    setScreen("start");
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inner}>
-        {isGameStarted ? (
-          <GameScreen
-            onGameOver={() => {
-              console.log("LOGGED GAME OVER");
-              setIsGameStarted(false);
-            }}
-          />
-        ) : (
-          <StartScreen
-            onStart={() => {
-              console.log("LOGGED START BUTTON");
-              setIsGameStarted(true);
-            }}
-          />
-        )}
+        {screen === "start" && <StartScreen onStart={startGame} />}
+        {screen === "game" && <GameScreen onGameOver={handleGameOver} />}
+        {screen === "win" && <WinScreen onBackToMenu={backToMenu} />}
       </View>
     </SafeAreaView>
   );
