@@ -6,8 +6,10 @@ import WinScreen from "./components/WinScreen";
 
 export default function App() {
   const [screen, setScreen] = useState("start");
+  const [difficulty, setDifficulty] = useState("Normal");
 
-  const startGame = () => {
+  const startGame = (selectedDifficulty) => {
+    setDifficulty(selectedDifficulty);
     setScreen("game");
   };
 
@@ -15,7 +17,6 @@ export default function App() {
     if (type === "win") {
       setScreen("win");
     } else if (type === "lose") {
-      // Only triggered when "Back to Start" is pressed
       setScreen("start");
     }
   };
@@ -28,7 +29,9 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <View style={styles.inner}>
         {screen === "start" && <StartScreen onStart={startGame} />}
-        {screen === "game" && <GameScreen onGameOver={handleGameOver} />}
+        {screen === "game" && (
+          <GameScreen onGameOver={handleGameOver} difficulty={difficulty} />
+        )}
         {screen === "win" && <WinScreen onBackToMenu={backToMenu} />}
       </View>
     </SafeAreaView>
