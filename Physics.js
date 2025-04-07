@@ -142,3 +142,4 @@ export function resetGameOverFlag() {
     gameOverTimeout = null;
   }
 }
+
