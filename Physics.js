@@ -22,7 +22,16 @@ export default function Physics(entities, { time }) {
 
   const crane = entities.crane?.body;
   if (crane) {
-    swingAngle += 0.05;
+    let swingIncrement = 0.025;
+
+    if (entities.score >= 100) {
+      swingIncrement = 0.075;
+    } else if (entities.score >= 50) {
+      swingIncrement = 0.05;
+    }
+
+    swingAngle += swingIncrement;
+
     const amplitude = 80;
     const centerX = entities.screen?.width || 400;
     const newX = centerX / 2 + Math.sin(swingAngle) * amplitude;
