@@ -2,6 +2,7 @@ import Matter from "matter-js";
 import React from "react";
 import { Image } from "react-native";
 
+// Renders the yellow box image at the correct physics body position
 const YellowBoxRenderer = (props) => {
   const { body } = props;
   const width = 40;
@@ -25,7 +26,8 @@ const YellowBoxRenderer = (props) => {
   );
 };
 
-export default function YellowBox(world, pos, label, score, setScore) {
+// Creates and returns a YellowBox entity with physics and rendering
+export default function YellowBox(world, pos, label, score, setScore, onLand) {
   const box = Matter.Bodies.rectangle(pos.x, pos.y, 40, 40, {
     label,
     restitution: 0,
@@ -44,5 +46,7 @@ export default function YellowBox(world, pos, label, score, setScore) {
     label,
     renderer: YellowBoxRenderer,
     points: 10,
+    // Pass along the callback
+    onLand,
   };
 }
